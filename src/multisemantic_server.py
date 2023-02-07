@@ -1,4 +1,4 @@
-from slam_task import SLAMTask
+from src.slam_task import SLAMTask
 # from pose_task import PoseTask
 
 class MultisemanticServer():
