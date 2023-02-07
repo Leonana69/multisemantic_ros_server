@@ -7,9 +7,9 @@ from werkzeug.utils import secure_filename
 from werkzeug.exceptions import RequestEntityTooLarge
 import os, cv2, json
 import numpy as np
-from src.utils import draw_pose_keypoints
-from src.multisemantic_packet import MultisemanticPacket
-from src.multisemantic_server import MultisemanticServer
+from utils import draw_pose_keypoints
+from multisemantic_packet import MultisemanticPacket
+from multisemantic_server import MultisemanticServer
 
 app = Flask(__name__)
 app.config['UPLOAD_IMAGE_PATH'] = 'assets/images/'
