@@ -164,7 +164,10 @@ include_directories(
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
   scripts/http_server.py
-  scripts/src/*.py
+  scripts/src/multisemantic_packet.py
+  scripts/src/multisemantic_server.py
+  scripts/src/slam_task.py
+  scripts/src/utils.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
