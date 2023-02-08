@@ -19,6 +19,8 @@ multisemantic_handle = MultisemanticServer()
 
 @app.route('/')
 def index():
+
+    print(os.getcwd())
     files = os.listdir(app.config['OUTPUT_IMAGE_PATH'])
     images = []
     for file in files:
