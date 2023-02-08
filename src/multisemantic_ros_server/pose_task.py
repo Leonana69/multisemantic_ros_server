@@ -1,16 +1,16 @@
 import rospy
-from multisemantic_ros_server.srv import SimpleTest
+from multisemantic_ros_server.srv import MSCVPose
 
 class PoseTask():
     def __init__(self):
         rospy.wait_for_service('mscv_pose_service')
 
-    def request(self, image):
+    def request(self, image_msg):
         try:
-            mscv_pose = rospy.ServiceProxy('mscv_pose_service', SimpleTest)
-            resp = mscv_pose(100)
-            print('resp: ', resp.b)
-            return resp.b
+            mscv_pose = rospy.ServiceProxy('mscv_pose_service', MSCVPose)
+            resp = mscv_pose(image_msg)
+            print('resp: ', resp.keypoints)
+            return resp.keypoints
         except rospy.ServiceException as e:
             print("[PT] mscv_pose_service call failed: %s"%e)
             return []
