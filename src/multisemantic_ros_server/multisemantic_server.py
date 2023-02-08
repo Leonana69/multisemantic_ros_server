@@ -18,9 +18,7 @@ class MultisemanticServer():
             }
 
             if f == 'pose':
-                print('run pose function1')
                 entry['output'] = self.pose_task.request(image_msg)
-                print('run pose function2')
             elif f == 'slam':
                 self.slam_task.request(image_msg)
             else:
