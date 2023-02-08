@@ -9,8 +9,8 @@ from multisemantic_ros_server.multisemantic_packet import MultisemanticPacket
 from multisemantic_ros_server.multisemantic_server import MultisemanticServer
 
 app = Flask(__name__)
-app.config['UPLOAD_IMAGE_PATH'] = 'assets/images/'
-app.config['OUTPUT_IMAGE_PATH'] = 'assets/outputs/'
+app.config['UPLOAD_IMAGE_PATH'] = '~/assets/images/'
+app.config['OUTPUT_IMAGE_PATH'] = '~/assets/outputs/'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['ALLOWED_EXTENSIONS'] = ['.jpg', '.jpeg', '.png']
 app.config['ALLOWED_FUNCTIONS'] = ['pose', 'slam', 'hands', 'face']
