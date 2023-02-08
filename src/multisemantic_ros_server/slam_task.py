@@ -7,7 +7,7 @@ class SLAMTask():
 		self.bridge = CvBridge()
 		self.pub = rospy.Publisher('/camera/image_raw', Image, queue_size=1)
 
-	def run(self, image):
+	def request(self, image):
 		if not rospy.is_shutdown():
 			msg = self.bridge.cv2_to_imgmsg(image)
 			self.pub.publish(msg)
