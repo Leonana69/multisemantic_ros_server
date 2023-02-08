@@ -1,5 +1,6 @@
 from multisemantic_ros_server.slam_task import SLAMTask
 from multisemantic_ros_server.pose_task import PoseTask
+from cv_bridge import CvBridge
 
 class MultisemanticServer():
     def __init__(self):
