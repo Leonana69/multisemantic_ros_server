@@ -12,3 +12,4 @@ class PoseTask():
             return resp.keypoints
         except rospy.ServiceException as e:
             print("[PT] mscv_pose_service call failed: %s"%e)
+            return []

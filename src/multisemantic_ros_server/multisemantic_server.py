@@ -1,10 +1,10 @@
 from multisemantic_ros_server.slam_task import SLAMTask
-# from pose_task import PoseTask
+from multisemantic_ros_server.pose_task import PoseTask
 
 class MultisemanticServer():
     def __init__(self):
         self.slam_task = SLAMTask()
-        # self.pose_task = PoseTask()
+        self.pose_task = PoseTask()
 
     def run(self, m_packet):
         result = []
@@ -16,10 +16,10 @@ class MultisemanticServer():
 
             if f == 'pose':
                 print('run pose function1')
-                # entry['output'] = self.pose_task.run(m_packet.image)
+                entry['output'] = self.pose_task.request(m_packet.image)
                 print('run pose function2')
             elif f == 'slam':
-                self.slam_task.run(m_packet.image)
+                self.slam_task.request(m_packet.image)
             else:
                 print('undefined function')
                 continue
