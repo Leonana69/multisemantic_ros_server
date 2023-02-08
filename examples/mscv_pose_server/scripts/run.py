@@ -10,7 +10,7 @@ interpreter = PoseTF()
 def pose(req):
     print('[P] get a request')
     keypoints = interpreter.run(bridge.imgmsg_to_cv2(req.img))
-    print(keypoints)
+    # print(keypoints)
     return MSCVPoseResponse(keypoints.ravel())
 
 def pose_server():
