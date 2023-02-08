@@ -8,8 +8,16 @@ from multisemantic_ros_server.utils import draw_pose_keypoints
 from multisemantic_ros_server.multisemantic_packet import MultisemanticPacket
 from multisemantic_ros_server.multisemantic_server import MultisemanticServer
 
+app = Flask(__name__)
+app.config['UPLOAD_IMAGE_PATH'] = 'assets/images/'
+app.config['OUTPUT_IMAGE_PATH'] = 'assets/outputs/'
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config['ALLOWED_EXTENSIONS'] = ['.jpg', '.jpeg', '.png']
+app.config['ALLOWED_FUNCTIONS'] = ['pose', 'slam', 'hands', 'face']
+
 multisemantic_handle = MultisemanticServer()
 
+@app.route('/')
 def index():
     files = os.listdir(app.config['OUTPUT_IMAGE_PATH'])
     images = []
@@ -19,6 +27,7 @@ def index():
             images.append(file)
     return render_template('index.html', images=images)
 
+@app.route('/upload', methods=['POST'])
 def upload():
     try:
         file = request.files['filename']
@@ -42,12 +51,17 @@ def upload():
     result_list = [secure_filename(file.filename)]
     return render_template('index.html', images=result_list, keypoints=json.dumps(result))
 
+@app.route('/serve-image/<filename>', methods=['GET'])
 def serve_image(filename):
     return send_from_directory(app.config['OUTPUT_IMAGE_PATH'], filename)
 
+@app.route('/api', methods=['POST'])
 def json_api():
     m_packet = MultisemanticPacket(request.data)
     if m_packet.is_valid:
         multisemantic_handle.run(m_packet)
 
     return m_packet.get_server_packet()
+
+def main():
+    app.run(host='172.29.249.77', port=50001)
