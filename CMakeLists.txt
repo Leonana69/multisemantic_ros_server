@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   image_transport
   std_msgs
   sensor_msgs
+  geometry_msgs
   message_generation
 )
 
@@ -75,6 +76,7 @@ generate_messages(
   DEPENDENCIES
   std_msgs
   sensor_msgs
+  geometry_msgs
 )
 
 ################################################
