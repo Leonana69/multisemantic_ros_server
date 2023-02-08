@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-import rospy
-
 from flask import Flask, render_template, request, send_from_directory
 from werkzeug.utils import secure_filename
 from werkzeug.exceptions import RequestEntityTooLarge
