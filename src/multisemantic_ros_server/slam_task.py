@@ -5,7 +5,7 @@ from geometry_msgs.msg import PoseStamped
 class SLAMTask():
 	def __init__(self):
 		self.pub = rospy.Publisher('/camera/image_raw', Image, queue_size=1)
-		self.sub = rospy.Subscriber('/orb_pose', geometry_msgs::PoseStamped, SLAMTask::slam_callback, self)
+		self.sub = rospy.Subscriber('/orb_pose', geometry_msgs::PoseStamped, SLAMTask::slam_callback)
 		self.pose = []
 
 	def request(self, image_msg):
@@ -14,7 +14,7 @@ class SLAMTask():
 		else:
 			print('[SL] ros is down')
 	
-	def slam_callback(data, slam_task):
+	def slam_callback(data):
 		print('get one pose')
-		slam_task.pose.append(data)
+		# slam_task.pose.append(data)
 		print('append one pose')
