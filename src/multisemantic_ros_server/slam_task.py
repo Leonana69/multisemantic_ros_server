@@ -20,6 +20,6 @@ class SLAMTask():
 	
 	def collect(self):
 		pose = self.pose
+		print(type(pose), len(pose))
 		self.pose = []
 		return pose
-	
