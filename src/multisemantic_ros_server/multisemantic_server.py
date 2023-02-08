@@ -21,6 +21,7 @@ class MultisemanticServer():
                 entry['output'] = self.pose_task.request(image_msg)
             elif f == 'slam':
                 self.slam_task.request(image_msg)
+                entry['output'] = self.slam_task.collect()
             else:
                 print('undefined function')
                 continue
