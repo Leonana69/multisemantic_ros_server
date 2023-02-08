@@ -2,7 +2,7 @@ import rospy
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import PoseStamped
 
-def slam_callback(data):
+def slam_callback(data, slam_task):
 	print('get one pose')
 	# slam_task.pose.append(data)
 	print('append one pose')
@@ -10,7 +10,7 @@ def slam_callback(data):
 class SLAMTask():
 	def __init__(self):
 		self.pub = rospy.Publisher('/camera/image_raw', Image, queue_size=1)
-		self.sub = rospy.Subscriber('/orb_pose', PoseStamped, slam_callback)
+		self.sub = rospy.Subscriber('/orb_pose', PoseStamped, slam_callback, self)
 		self.pose = []
 
 	def request(self, image_msg):
