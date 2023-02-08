@@ -4,8 +4,7 @@ from geometry_msgs.msg import PoseStamped
 
 def slam_callback(data, slam_task):
 	print('get one pose')
-	# slam_task.pose.append(data)
-	print('append one pose')
+	slam_task.pose.append(data)
 
 class SLAMTask():
 	def __init__(self):
@@ -19,4 +18,8 @@ class SLAMTask():
 		else:
 			print('[SL] ros is down')
 	
+	def collect(self):
+		pose = self.pose
+		self.pose = []
+		return pose
 	
