@@ -4,7 +4,7 @@ from geometry_msgs.msg import PoseStamped
 
 def slam_callback(data, slam_task):
 	print('get one pose')
-	slam_task.pose.append(data)
+	slam_task.pose.append(str(data))
 
 class SLAMTask():
 	def __init__(self):
