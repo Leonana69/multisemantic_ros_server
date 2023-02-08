@@ -3,7 +3,6 @@ from sensor_msgs.msg import Image
 from geometry_msgs.msg import PoseStamped
 
 def slam_callback(data, slam_task):
-	print('get one pose')
 	slam_task.pose.append(str(data))
 
 class SLAMTask():
@@ -20,7 +19,5 @@ class SLAMTask():
 	
 	def collect(self):
 		pose = self.pose
-		if len(pose) > 0:
-			print(type(pose[0]), len(pose))
 		self.pose = []
 		return pose
