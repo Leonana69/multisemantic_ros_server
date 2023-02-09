@@ -13,7 +13,7 @@ class SLAMTask():
 
 	def request(self, image_msg):
 		self.pub.publish(image_msg)
-		return self.collect(), '[SL] request slam [SUCCESS]
+		return self.collect(), '[SL] request slam [SUCCESS]'
 	
 	def collect(self):
 		pose = self.pose
