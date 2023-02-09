@@ -13,7 +13,11 @@ class SLAMTask():
 
 	def request(self, image_msg):
 		self.pub.publish(image_msg)
-		return self.collect(), '[SL] request slam [SUCCESS]'
+		ret = self.collect()
+		if len(ret) > 0:
+			return self.collect(), '[SL] request slam [SUCCESS]'
+		else:
+			return [], '[SL] no results'
 	
 	def collect(self):
 		pose = self.pose
