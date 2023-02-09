@@ -41,9 +41,11 @@ def upload():
                 return 'File is not an image.'
             
             image_str = file.read()
-            origin_image = cv2.imdecode(np.fromstring(image_str, np.uint8), cv2.IMREAD_COLOR)
-            result = multisemantic_service([function], origin_image)
-            marked_image = draw_pose_keypoints(origin_image, np.array(result[0]['output']))
+            image = cv2.imdecode(np.fromstring(image_str, np.uint8), cv2.IMREAD_COLOR)
+            m_packet = MultisemanticPacket('web_interface', 'single_image', function.split(','), [], image)
+            if m_packet.is_valid():
+                multisemantic_handle.run(m_packet)
+            marked_image = draw_pose_keypoints(image, np.array(m_packet.result[0]['output']))
             cv2.imwrite(os.path.join(app.config['OUTPUT_IMAGE_PATH'], secure_filename(file.filename)), marked_image)
             cv2.imwrite(os.path.join(app.config['UPLOAD_IMAGE_PATH'], secure_filename(file.filename)), origin_image)
 
@@ -59,8 +61,8 @@ def serve_image(filename):
 
 @app.route('/api', methods=['POST'])
 def json_api():
-    m_packet = MultisemanticPacket(request.data)
-    if m_packet.is_valid:
+    m_packet = MultisemanticPacket.from_json_str(request.data)
+    if m_packet.is_valid():
         multisemantic_handle.run(m_packet)
 
     return m_packet.get_server_packet()

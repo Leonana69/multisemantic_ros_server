@@ -4,59 +4,79 @@ import numpy as np
 
 class MultisemanticPacket():
     mode = ['single_image', 'stream']
-    function = ['pose', 'slam', 'face', 'hands']
+    function = ['pose', 'slam']
 
-    def __init__(self, str_packet):
+    def __init__(self, user='', mode='', function=[], msg=[], image=None):
+        self.user = user
+        self.mode = mode
+        self.function = function
+        self.msg = msg
+        self.image = image
+        self.result = []
+
+    def from_json_str(str_packet):
         # parse client packet
         try:
-            self.is_valid = True
-            self.msg = []
-            self.result = []
-            self.function = []
-            self.mode = 'None'
-
+            user = ''
+            mode = ''
+            function = []
+            msg = []
+            image = None
             json_packet = json.loads(str_packet)
         except ValueError as e:
             print('[MP] parse json [FAILED]')
-            self.is_valid = False
-            return
+            return MultisemanticPacket()
 
         if 'user' in json_packet:
-            self.user = json_packet['user']
-        else:
-            self.user = 'default_user'
-            self.msg.append('[INIT] user field is emtpy, use default_user')
-
+            user = json_packet['user']
+            
         if 'mode' in json_packet:
-            m = json_packet['mode']
-            if m in MultisemanticPacket.mode:
-                self.mode = json_packet['mode']
-            else:
-                self.msg.append('[INIT] invalid mode: {}'.format(m))
-        else:
-            self.mode = 'single_image'
-            self.msg.append('[INIT] mode field is emtpy, use single_image')
-
+            mode = json_packet['mode']
 
         if 'function' in json_packet and type(json_packet['function']) is list:
-            for f in json_packet['function']:
-                if f in MultisemanticPacket.function:
-                    self.function.append(f)
-                else:
-                    self.msg.append('[INIT] invalid function: {}'.format(f))
-        else:
-            self.msg.append('[INIT] no function is assigned')
+            function = json_packet['function']
 
         if 'image' in json_packet:
             img = np.array(json_packet['image'], dtype=np.uint8)
-            self.image = cv2.imdecode(img, cv2.IMREAD_COLOR)
-            if not self.image.any():
-                print('[MP] image decode [FAILED]')
-                self.msg.append('[INIT] image decode failed')
+            image = cv2.imdecode(img, cv2.IMREAD_COLOR)
+
+        return MultisemanticPacket(user, mode, function, msg, image)
+
+    def is_valid(self):
+        is_valid = True
+        if len(self.user) == 0:
+            self.msg.append('[WARNING] no user identification')
+
+        if len(self.mode) == 0:
+            is_valid = False
+            self.msg.append(f'[ERROR] mode field is empty, the valid values are: {MultisemanticPacket.mode}')
+        elif self.mode not in MultisemanticPacket.mode:
+            is_valid = False
+            self.msg.append(f'[ERROR] invalid mode: {self.mode}, the valid values are: {MultisemanticPacket.mode}')
+
+        if len(self.function) == 0:
+            is_valid = False
+            self.msg.append(f'[ERROR] function field is empty, the valid values are: {MultisemanticPacket.function}')
         else:
-            print('[MP] no image')
-            self.msg.append('[INIT] image field is empty')
-            self.is_valid = False
+            valid_function = []
+            for f in self.function:
+                if f not in MultisemanticPacket.function:
+                    self.msg.append(f'[WARNING] invalid function: {f}, the valid values are: {MultisemanticPacket.function}')
+                else:
+                    valid_function.append(f)
+            self.function = valid_function
+            if len(self.function) == 0:
+                is_valid = False
+                self.msg.append('[ERROR] no valid function')
+
+        if self.image is None:
+            is_valid = False
+            self.msg.append(f'[ERROR] empty image field')
+        elif not self.image.any():
+            is_valid = False
+            self.msg.append(f'[ERROR] image decode failed')
+
+        return is_valid
 
     def get_server_packet(self):
         r_packet = {
