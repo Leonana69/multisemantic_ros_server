@@ -57,7 +57,7 @@ def upload():
 
 @app.route('/serve-image/<filename>', methods=['GET'])
 def serve_image(filename):
-    print(os.getcwd())
+    print(os.getcwd(), app.config['OUTPUT_IMAGE_PATH'], filename)
     return send_from_directory(app.config['OUTPUT_IMAGE_PATH'], filename)
 
 @app.route('/api', methods=['POST'])
