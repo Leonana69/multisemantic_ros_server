@@ -15,7 +15,7 @@ class SLAMTask():
 		self.pub.publish(image_msg)
 		ret = self.collect()
 		if len(ret) > 0:
-			return self.collect(), '[SL] request slam [SUCCESS]'
+			return ret, '[SL] request slam [SUCCESS]'
 		else:
 			return [], '[SL] no results'
 	
