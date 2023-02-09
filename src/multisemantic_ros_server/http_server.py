@@ -8,9 +8,11 @@ from multisemantic_ros_server.utils import draw_pose_keypoints
 from multisemantic_ros_server.multisemantic_packet import MultisemanticPacket
 from multisemantic_ros_server.multisemantic_server import MultisemanticServer
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+
 app = Flask(__name__)
-app.config['UPLOAD_IMAGE_PATH'] = './assets/images/'
-app.config['OUTPUT_IMAGE_PATH'] = './assets/outputs/'
+app.config['UPLOAD_IMAGE_PATH'] = os.path.join(basedir, 'assets/images/')
+app.config['OUTPUT_IMAGE_PATH'] = os.path.join(basedir, 'assets/outputs/')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['ALLOWED_EXTENSIONS'] = ['.jpg', '.jpeg', '.png']
 
@@ -57,7 +59,6 @@ def upload():
 
 @app.route('/serve-image/<filename>', methods=['GET'])
 def serve_image(filename):
-    print(os.getcwd(), app.config['OUTPUT_IMAGE_PATH'], filename)
     return send_from_directory(app.config['OUTPUT_IMAGE_PATH'], filename)
 
 @app.route('/api', methods=['POST'])
