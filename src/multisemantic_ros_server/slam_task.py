@@ -12,10 +12,8 @@ class SLAMTask():
 		self.pose = []
 
 	def request(self, image_msg):
-		if not rospy.is_shutdown():
-			self.pub.publish(image_msg)
-		else:
-			print('[SL] ros is down')
+		self.pub.publish(image_msg)
+		return self.collect(), '[SL] request slam [SUCCESS]
 	
 	def collect(self):
 		pose = self.pose
