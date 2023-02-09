@@ -21,14 +21,15 @@ multisemantic_handle = MultisemanticServer()
 @app.route('/')
 def index():
 
-    print(app.config['OUTPUT_IMAGE_PATH'])
-    files = os.listdir(app.config['OUTPUT_IMAGE_PATH'])
-    images = []
-    for file in files:
-        extension = os.path.splitext(file)[1]
-        if extension in app.config['ALLOWED_EXTENSIONS']:
-            images.append(file)
-    return render_template('index.html', images=images)
+    # print(app.config['OUTPUT_IMAGE_PATH'])
+    # files = os.listdir(app.config['OUTPUT_IMAGE_PATH'])
+    # images = []
+    # for file in files:
+    #     extension = os.path.splitext(file)[1]
+    #     if extension in app.config['ALLOWED_EXTENSIONS']:
+    #         images.append(file)
+    # return render_template('index.html', images=images)
+    return render_template('index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload():
