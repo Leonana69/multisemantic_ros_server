@@ -13,7 +13,6 @@ app.config['UPLOAD_IMAGE_PATH'] = './assets/images/'
 app.config['OUTPUT_IMAGE_PATH'] = './assets/outputs/'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['ALLOWED_EXTENSIONS'] = ['.jpg', '.jpeg', '.png']
-app.config['ALLOWED_FUNCTIONS'] = ['pose', 'slam', 'hands', 'face']
 
 multisemantic_handle = MultisemanticServer()
 
@@ -45,18 +44,20 @@ def upload():
             m_packet = MultisemanticPacket('web_interface', 'single_image', function.split(','), [], image)
             if m_packet.is_valid():
                 multisemantic_handle.run(m_packet)
+
             marked_image = draw_pose_keypoints(image, np.array(m_packet.result[0]['output']))
             cv2.imwrite(os.path.join(app.config['OUTPUT_IMAGE_PATH'], secure_filename(file.filename)), marked_image)
-            cv2.imwrite(os.path.join(app.config['UPLOAD_IMAGE_PATH'], secure_filename(file.filename)), origin_image)
+            cv2.imwrite(os.path.join(app.config['UPLOAD_IMAGE_PATH'], secure_filename(file.filename)), image)
 
     except RequestEntityTooLarge:
         return 'File exceeds the 16MB limit.'
 
     result_list = [secure_filename(file.filename)]
-    return render_template('index.html', images=result_list, keypoints=json.dumps(result))
+    return render_template('index.html', images=result_list, keypoints=json.dumps(m_packet.result))
 
 @app.route('/serve-image/<filename>', methods=['GET'])
 def serve_image(filename):
+    print(os.getcwd())
     return send_from_directory(app.config['OUTPUT_IMAGE_PATH'], filename)
 
 @app.route('/api', methods=['POST'])
