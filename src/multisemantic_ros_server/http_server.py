@@ -62,7 +62,7 @@ def upload():
 def serve_image(filename):
     return send_from_directory(app.config['OUTPUT_IMAGE_PATH'], filename)
 
-@app.route('/api', methods=['POST', 'GET'])
+@app.route('/api', methods=['POST'])
 def json_api():
     m_packet = MultisemanticPacket.from_json_str(request.data)
     if m_packet.is_valid():
