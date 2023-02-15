@@ -62,7 +62,7 @@ def upload():
 def serve_image(filename):
     return send_from_directory(app.config['OUTPUT_IMAGE_PATH'], filename)
 
-@app.route('/api', methods=['POST'])
+@app.route('/api', methods=['POST', 'GET'])
 def json_api():
     m_packet = MultisemanticPacket.from_json_str(request.data)
     if m_packet.is_valid():
@@ -71,4 +71,4 @@ def json_api():
     return m_packet.get_server_packet()
 
 def main():
-    app.run(host='172.29.249.77', port=50001)
+    app.run(host='0.0.0.0', port=50001)
