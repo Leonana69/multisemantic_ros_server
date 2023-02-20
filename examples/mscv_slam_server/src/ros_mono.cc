@@ -17,20 +17,20 @@
 */
 
 
-#include<iostream>
-#include<algorithm>
-#include<fstream>
-#include<chrono>
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+#include <chrono>
 
-#include<ros/ros.h>
+#include <ros/ros.h>
 #include <cv_bridge/cv_bridge.h>
 
-#include<opencv2/core/core.hpp>
+#include <opencv2/core/core.hpp>
 
-#include"../../../include/System.h"
+#include "../../../include/System.h"
 
 // leo: for pubbing
-#include"Converter.h"
+#include "Converter.h"
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Quaternion.h>
@@ -39,10 +39,9 @@
 
 using namespace std;
 
-class ImageGrabber
-{
+class ImageGrabber {
 public:
-    ImageGrabber(ORB_SLAM3::System* pSLAM):mpSLAM(pSLAM){}
+    ImageGrabber(ORB_SLAM3::System* pSLAM):mpSLAM(pSLAM) {}
 
     void GrabImage(const sensor_msgs::ImageConstPtr& msg);
 
@@ -58,13 +57,11 @@ public:
     // leo: end
 };
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     ros::init(argc, argv, "Mono");
     ros::start();
 
-    if(argc != 3)
-    {
+    if (argc != 3) {
         cerr << endl << "Usage: rosrun ORB_SLAM3 Mono path_to_vocabulary path_to_settings" << endl;        
         ros::shutdown();
         return 1;
@@ -97,59 +94,50 @@ int main(int argc, char **argv)
     return 0;
 }
 
-void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
-{
+void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg) {
     // Copy the ros image message to cv::Mat.
     cv_bridge::CvImageConstPtr cv_ptr;
-    try
-    {
+    try {
         cv_ptr = cv_bridge::toCvShare(msg);
-    }
-    catch (cv_bridge::Exception& e)
-    {
+    } catch (cv_bridge::Exception& e) {
         ROS_ERROR("cv_bridge exception: %s", e.what());
         return;
     }
 
     cv::Mat T_, R_, t_ ;
 
-    T_ = mpSLAM->TrackMonocular(cv_ptr->image,cv_ptr->header.stamp.toSec());
+    mpSLAM->TrackMonocular(cv_ptr->image,cv_ptr->header.stamp.toSec());
 
-    if (pub_tf || pub_pose)
-    {    
-        if (!(T_.empty())) {
+    // if (pub_tf || pub_pose) {    
+    //     if (!(T_.empty())) {
 
-            cv::Size s = T_.size();
-            if ((s.height >= 3) && (s.width >= 3)) {
-                R_ = T_.rowRange(0,3).colRange(0,3).t();
-                t_ = -R_*T_.rowRange(0,3).col(3);
-                vector<float> q = ORB_SLAM3::Converter::toQuaternion(R_);
-                float scale_factor=1.0;
-                tf::Transform transform;
-                transform.setOrigin(tf::Vector3(t_.at<float>(0, 0)*scale_factor, t_.at<float>(0, 1)*scale_factor, t_.at<float>(0, 2)*scale_factor));
-                tf::Quaternion tf_quaternion(q[0], q[1], q[2], q[3]);
-                transform.setRotation(tf_quaternion);
-                /*
-                if (pub_tf)
-                {
-                static tf::TransformBroadcaster br_;
-                br_.sendTransform(tf::StampedTransform(transform, ros::Time(tIm), "world", "ORB_SLAM3_MONO_INERTIAL"));
-                }
-                */
+    //         cv::Size s = T_.size();
+    //         if ((s.height >= 3) && (s.width >= 3)) {
+    //             R_ = T_.rowRange(0,3).colRange(0,3).t();
+    //             t_ = -R_*T_.rowRange(0,3).col(3);
+    //             vector<float> q = ORB_SLAM3::Converter::toQuaternion(R_);
+    //             float scale_factor=1.0;
+    //             tf::Transform transform;
+    //             transform.setOrigin(tf::Vector3(t_.at<float>(0, 0)*scale_factor, t_.at<float>(0, 1)*scale_factor, t_.at<float>(0, 2)*scale_factor));
+    //             tf::Quaternion tf_quaternion(q[0], q[1], q[2], q[3]);
+    //             transform.setRotation(tf_quaternion);
+    //             /*
+    //             if (pub_tf)
+    //             {
+    //             static tf::TransformBroadcaster br_;
+    //             br_.sendTransform(tf::StampedTransform(transform, ros::Time(tIm), "world", "ORB_SLAM3_MONO_INERTIAL"));
+    //             }
+    //             */
 
-                if (pub_pose)
-                {
-                    geometry_msgs::PoseStamped pose;
-                    //pose.header.stamp = img0Buf.front()->header.stamp;
-                    pose.header.frame_id ="ORB_SLAM3_MONO_INERTIAL";
-                    tf::poseTFToMsg(transform, pose.pose);
-                    orb_pub->publish(pose);
-                }
+    //             if (pub_pose) {
+    //                 geometry_msgs::PoseStamped pose;
+    //                 //pose.header.stamp = img0Buf.front()->header.stamp;
+    //                 pose.header.frame_id ="ORB_SLAM3_MONO_INERTIAL";
+    //                 tf::poseTFToMsg(transform, pose.pose);
+    //                 orb_pub->publish(pose);
+    //             }
 
-            }
-        }
-    }
-
+    //         }
+    //     }
+    // }
 }
-
-
