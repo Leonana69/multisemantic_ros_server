@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
     ImageGrabber igb(&SLAM);
 
     ros::NodeHandle nodeHandler;
-    ros::Subscriber sub = nodeHandler.subscribe("/camera/image_raw", 1, &ImageGrabber::GrabImage,&igb);
+    ros::Subscriber sub = nodeHandler.subscribe("/camera/image_raw", 1, &ImageGrabber::GrabImage, &igb);
 
     // leo: add for pub
     ros::Publisher pose_pub = nodeHandler.advertise<geometry_msgs::PoseStamped>("orb_pose", 100);
@@ -86,7 +86,7 @@ int main(int argc, char **argv) {
     SLAM.Shutdown();
 
     // Save camera trajectory
-    SLAM.SaveKeyFrameTrajectoryTUM("KeyFrameTrajectory.txt");
+    // SLAM.SaveKeyFrameTrajectoryTUM("KeyFrameTrajectory.txt");
 
     ros::shutdown();
 
@@ -105,7 +105,7 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg) {
 
     cv::Mat T_, R_, t_ ;
 
-    mpSLAM->TrackMonocular(cv_ptr->image,cv_ptr->header.stamp.toSec());
+    mpSLAM->TrackMonocular(cv_ptr->image, cv_ptr->header.stamp.toSec());
 
     // if (pub_tf || pub_pose) {    
     //     if (!(T_.empty())) {
