@@ -27,7 +27,7 @@
 
 #include <opencv2/core/core.hpp>
 
-#include "../../../include/System.h"
+#include "System.h"
 
 // leo: for pubbing
 #include "Converter.h"
