@@ -96,7 +96,7 @@ class MultisemanticPacket():
         r_packet = {
             'user': self.user,
             'mode': self.mode,
-            'index': self.index
+            'index': self.index,
             'function': self.function,
             'msg': self.msg,
             'result': self.result,
