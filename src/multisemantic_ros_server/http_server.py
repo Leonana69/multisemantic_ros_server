@@ -47,7 +47,7 @@ def upload():
                 'format': 'raw',
                 'data': cv2.imdecode(np.fromstring(image_str, np.uint8), cv2.IMREAD_COLOR)
             }
-            m_packet = MultisemanticPacket('web_interface', 'single_image', 0, function.split(','), [], image)
+            m_packet = MultisemanticPacket('web_interface', 'single_image', 0, 0.0, function.split(','), [], image)
             if m_packet.is_valid():
                 multisemantic_handle.run(m_packet)
 

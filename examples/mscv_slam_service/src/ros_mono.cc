@@ -40,7 +40,7 @@ using namespace std;
 
 class ImageGrabber {
 public:
-    ImageGrabber(ORB_SLAM3::System* pSLAM):mpSLAM(pSLAM) {}
+    ImageGrabber(ORB_SLAM3::System* pSLAM): mpSLAM(pSLAM) {}
 
     void GrabImage(const sensor_msgs::ImageConstPtr& msg);
 
@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
     }
 
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
-    ORB_SLAM3::System SLAM(argv[1], argv[2], ORB_SLAM3::System::MONOCULAR, true);
+    ORB_SLAM3::System SLAM(argv[1], argv[2], ORB_SLAM3::System::MONOCULAR, false);
 
     ImageGrabber igb(&SLAM);
 
@@ -89,7 +89,6 @@ int main(int argc, char **argv) {
     // SLAM.SaveKeyFrameTrajectoryTUM("KeyFrameTrajectory.txt");
 
     ros::shutdown();
-
     return 0;
 }
 
@@ -107,7 +106,7 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg) {
 
     mpSLAM->TrackMonocular(cv_ptr->image, cv_ptr->header.stamp.toSec());
 
-    // if (pub_tf || pub_pose) {    
+    // if (pub_tf || pub_pose) {
     //     if (!(T_.empty())) {
 
     //         cv::Size s = T_.size();

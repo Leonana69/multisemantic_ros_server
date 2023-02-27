@@ -5,10 +5,11 @@ class MultisemanticPacket():
     function = ['pose', 'slam']
     image_format = ['raw', 'cv_compressed', 'ros_msg']
 
-    def __init__(self, user='', mode='', index=-1, function=[], msg=[], image=None, imu=None):
+    def __init__(self, user='', mode='', index=-1, timestamp=0.0 function=[], msg=[], image=None, imu=None):
         self.user = user
         self.mode = mode
         self.index = index
+        self.timestamp = timestamp
         self.function = function
         self.msg = msg
         self.image = image
@@ -20,6 +21,8 @@ class MultisemanticPacket():
         try:
             user = ''
             mode = ''
+            index = -1
+            timestamp = 0.0
             function = []
             msg = []
             image = None
@@ -38,6 +41,9 @@ class MultisemanticPacket():
         if 'index' in json_packet:
             index = json_packet['index']
 
+        if 'timestamp' in json_packet:
+            timestamp = json_packet['timestamp']
+
         if 'function' in json_packet and type(json_packet['function']) is list:
             function = json_packet['function']
 
@@ -47,7 +53,7 @@ class MultisemanticPacket():
         if 'imu' in json_packet:
             imu = json_packet['imu']
 
-        return MultisemanticPacket(user, mode, index, function, msg, image, imu)
+        return MultisemanticPacket(user, mode, index, timestamp, function, msg, image, imu)
 
     def is_valid(self):
         is_valid = True
@@ -63,6 +69,9 @@ class MultisemanticPacket():
 
         if self.index < 0:
             self.msg.append(f'[WARN] no index')
+
+        if self.timestamp == 0.0:
+            self.msg.append(f'[WARN] no timestamp')
 
         if len(self.function) == 0:
             is_valid = False
@@ -94,6 +103,7 @@ class MultisemanticPacket():
             'user': self.user,
             'mode': self.mode,
             'index': self.index,
+            'timestamp': self.timestamp,
             'function': self.function,
             'msg': self.msg,
             'result': self.result,
