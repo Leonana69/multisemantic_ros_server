@@ -50,6 +50,7 @@ def upload():
             m_packet = MultisemanticPacket('web_interface', 'single_image', 0, function.split(','), [], image)
             if m_packet.is_valid():
                 multisemantic_handle.run(m_packet)
+            print(m_packet['msg'])
 
             marked_image = draw_pose_keypoints(image, np.array(m_packet.result[0]['output']))
             cv2.imwrite(os.path.join(app.config['OUTPUT_IMAGE_PATH'], secure_filename(file.filename)), marked_image)

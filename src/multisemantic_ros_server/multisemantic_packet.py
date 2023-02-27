@@ -88,6 +88,7 @@ class MultisemanticPacket():
             is_valid = False
             self.msg.append(f'[ERROR] empty image field')
         elif 'format' not in self.image or 'data' not in self.image:
+            is_valid = False
             self.msg.append(f'[ERROR] invalid image field (\'format\' and \'data\' are required)')
 
         return is_valid
