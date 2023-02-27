@@ -1,6 +1,4 @@
 import json
-import cv2
-import numpy as np
 
 class MultisemanticPacket():
     mode = ['single_image', 'stream']
@@ -45,8 +43,6 @@ class MultisemanticPacket():
 
         if 'image' in json_packet:
             image = json_packet['image']
-            # img = np.array(json_packet['data'], dtype=np.uint8)
-            # image = cv2.imdecode(img, cv2.IMREAD_COLOR)
 
         if 'imu' in json_packet:
             imu = json_packet['imu']

@@ -2,6 +2,8 @@ from multisemantic_ros_server.slam_task import SLAMTask
 from multisemantic_ros_server.pose_task import PoseTask
 from multisemantic_ros_server.multisemantic_packet import MultisemanticPacket
 from cv_bridge import CvBridge
+import cv2
+import numpy as np
 
 class MultisemanticServer():
     def __init__(self):
