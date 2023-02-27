@@ -102,9 +102,7 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg) {
         return;
     }
 
-    cv::Mat T_, R_, t_ ;
-
-    mpSLAM->TrackMonocular(cv_ptr->image, cv_ptr->header.stamp.toSec());
+    float* s = mpSLAM->TrackMonocular(cv_ptr->image, cv_ptr->header.stamp.toSec()).data();
 
     // if (pub_tf || pub_pose) {
     //     if (!(T_.empty())) {

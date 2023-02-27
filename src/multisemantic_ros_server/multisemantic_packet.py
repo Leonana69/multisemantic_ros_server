@@ -5,10 +5,9 @@ class MultisemanticPacket():
     function = ['pose', 'slam']
     image_format = ['raw', 'cv_compressed', 'ros_msg']
 
-    def __init__(self, user='', mode='', index=-1, timestamp=0.0 function=[], msg=[], image=None, imu=None):
+    def __init__(self, user='', mode='', timestamp=0.0 function=[], msg=[], image=None, imu=None):
         self.user = user
         self.mode = mode
-        self.index = index
         self.timestamp = timestamp
         self.function = function
         self.msg = msg
@@ -21,7 +20,6 @@ class MultisemanticPacket():
         try:
             user = ''
             mode = ''
-            index = -1
             timestamp = 0.0
             function = []
             msg = []
@@ -38,9 +36,6 @@ class MultisemanticPacket():
         if 'mode' in json_packet:
             mode = json_packet['mode']
 
-        if 'index' in json_packet:
-            index = json_packet['index']
-
         if 'timestamp' in json_packet:
             timestamp = json_packet['timestamp']
 
@@ -53,7 +48,7 @@ class MultisemanticPacket():
         if 'imu' in json_packet:
             imu = json_packet['imu']
 
-        return MultisemanticPacket(user, mode, index, timestamp, function, msg, image, imu)
+        return MultisemanticPacket(user, mode, timestamp, function, msg, image, imu)
 
     def is_valid(self):
         is_valid = True
@@ -66,9 +61,6 @@ class MultisemanticPacket():
         elif self.mode not in MultisemanticPacket.mode:
             is_valid = False
             self.msg.append(f'[ERROR] invalid mode: {self.mode}, the valid values are: {MultisemanticPacket.mode}')
-
-        if self.index < 0:
-            self.msg.append(f'[WARN] no index')
 
         if self.timestamp == 0.0:
             self.msg.append(f'[WARN] no timestamp')
@@ -102,7 +94,6 @@ class MultisemanticPacket():
         r_packet = {
             'user': self.user,
             'mode': self.mode,
-            'index': self.index,
             'timestamp': self.timestamp,
             'function': self.function,
             'msg': self.msg,
