@@ -1,0 +1,3 @@
+<launch>
+  <node name="mscv_http_service" pkg="mscv_http_service" type="run.py" output="screen"/>
+</launch>
