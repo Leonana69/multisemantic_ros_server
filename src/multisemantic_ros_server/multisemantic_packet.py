@@ -33,7 +33,7 @@ class MultisemanticPacket():
 
         if 'user' in json_packet:
             user = json_packet['user']
-            
+
         if 'mode' in json_packet:
             mode = json_packet['mode']
 
