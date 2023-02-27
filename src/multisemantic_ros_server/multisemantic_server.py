@@ -10,7 +10,16 @@ class MultisemanticServer():
 
     def run(self, m_packet):
         result = []
-        image_msg = self.bridge.cv2_to_imgmsg(m_packet.image)
+
+        if m_packet.image['format'] == MultisemanticPacket.image_format[0]:
+            image_msg = self.bridge.cv2_to_imgmsg(m_packet.image['data'])
+        elif m_packet.image['format'] == MultisemanticPacket.image_format[1]:
+            img = np.array(m_packet.image['data'], dtype=np.uint8)
+            image = cv2.imdecode(img, cv2.IMREAD_COLOR)
+            image_msg = self.bridge.cv2_to_imgmsg(image)
+        elif m_packet.image['format'] == MultisemanticPacket.image_format[2]:
+            image_msg = m_packet.image['data']
+
         for f in m_packet.function:
             entry = {
                 'function': f,
