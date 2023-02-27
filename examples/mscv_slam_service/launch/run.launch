@@ -3,5 +3,5 @@
         pkg="mscv_slam_service"
         type="mscv_slam_service_node"
         output="screen"
-        args="/root/Dev/ORB_SLAM3/Vocabulary/ORBvoc.txt /root/Dev/ORB_SLAM3/Examples/Monocular/KITTI00-02.yaml"/>
+        args="/root/Dev/ORB_SLAM3/Vocabulary/ORBvoc.txt /root/Dev/ORB_SLAM3/Examples/Monocular/mbp14.yaml"/>
 </launch>
