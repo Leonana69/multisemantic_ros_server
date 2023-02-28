@@ -23,6 +23,8 @@ class MultisemanticServer():
             image_msg = self.bridge.cv2_to_imgmsg(image)
         elif m_packet.image['format'] == MultisemanticPacket.image_format[2]:
             image_msg = m_packet.image['data']
+        else:
+            image_msg = None
 
         for f in m_packet.function:
             entry = {
@@ -36,9 +38,11 @@ class MultisemanticServer():
                 if m_packet.user not in self.slam_nodes:
                     print(f'init slam node: {m_packet.user}')
                     self.slam_nodes[m_packet.user] = SLAMTask(m_packet.user)
+                    msg = 'Init SLAM Node'
                 elif m_packet.mode == 'stop':
                     print(f'remove slam node: {m_packet.user}')
                     del self.slam_nodes[m_packet.user]
+                    msg = 'Remove SLAM Node'
                 else:
                     entry['output'], msg = self.slam_nodes[m_packet.user].request(image_msg)
             else:

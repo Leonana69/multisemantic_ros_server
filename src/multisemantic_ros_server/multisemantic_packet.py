@@ -3,7 +3,7 @@ import json
 class MultisemanticPacket():
     mode = ['single_image', 'stream', 'stop']
     function = ['pose', 'slam']
-    image_format = ['raw', 'cv_compressed', 'ros_msg']
+    image_format = ['none', 'raw', 'cv_compressed', 'ros_msg']
     users_list = ['duke_drone_1', 'duke_drone_2', 'test', 'guojun']
 
     def __init__(self, user='', mode='', timestamp=0.0, function=[], msg=[], image=None, imu=None):
