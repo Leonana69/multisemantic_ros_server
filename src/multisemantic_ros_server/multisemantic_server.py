@@ -8,7 +8,8 @@ import numpy as np
 class MultisemanticServer():
     def __init__(self):
         self.bridge = CvBridge()
-        self.slam_task = SLAMTask()
+        # self.slam_task = SLAMTask()
+        self.slam_nodes = {}
         self.pose_task = PoseTask()
 
     def run(self, m_packet):
@@ -32,7 +33,14 @@ class MultisemanticServer():
             if f == 'pose':
                 entry['output'], msg = self.pose_task.request(image_msg)
             elif f == 'slam':
-                entry['output'], msg = self.slam_task.request(image_msg)
+                if m_packet.user not in self.slam_nodes:
+                    print(f'init slam node: {m_packet.user}')
+                    self.slam_nodes[m_packet.user] = SLAMTask(m_packet.user)
+                elif m_packet.mode == 'stop':
+                    print(f'remove slam node: {m_packet.user}')
+                    del self.slam_nodes[m_packet.user]
+                else:
+                    entry['output'], msg = self.slam_nodes[m_packet.user].request(image_msg)
             else:
                 print('undefined function')
                 continue

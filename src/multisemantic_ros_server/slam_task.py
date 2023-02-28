@@ -6,9 +6,9 @@ def slam_callback(data, slam_task):
 	slam_task.pose.append(str(data))
 
 class SLAMTask():
-	def __init__(self):
-		self.pub = rospy.Publisher('/camera/image_raw', Image, queue_size=1)
-		self.sub = rospy.Subscriber('/orb_pose', PoseStamped, slam_callback, self)
+	def __init__(self, user):
+		self.pub = rospy.Publisher('/camera/image_' + user, Image, queue_size=1)
+		self.sub = rospy.Subscriber('/slam_res_' + user, PoseStamped, slam_callback, self)
 		self.pose = []
 
 	def request(self, image_msg):

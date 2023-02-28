@@ -1,11 +1,12 @@
 import json
 
 class MultisemanticPacket():
-    mode = ['single_image', 'stream']
+    mode = ['single_image', 'stream', 'stop']
     function = ['pose', 'slam']
     image_format = ['raw', 'cv_compressed', 'ros_msg']
+    users_list = ['duke_drone_1', 'duke_drone_2', 'test', 'guojun']
 
-    def __init__(self, user='', mode='', timestamp=0.0 function=[], msg=[], image=None, imu=None):
+    def __init__(self, user='', mode='', timestamp=0.0, function=[], msg=[], image=None, imu=None):
         self.user = user
         self.mode = mode
         self.timestamp = timestamp
@@ -52,8 +53,9 @@ class MultisemanticPacket():
 
     def is_valid(self):
         is_valid = True
-        if len(self.user) == 0:
-            self.msg.append('[WARNING] no user identification')
+        if len(self.user) == 0 or self.user not in MultisemanticPacket.users_list:
+            self.msg.append('[ERROR] invliad user identification')
+            is_valid = False
 
         if len(self.mode) == 0:
             is_valid = False
