@@ -103,6 +103,10 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg) {
     }
 
     float* s = mpSLAM->TrackMonocular(cv_ptr->image, cv_ptr->header.stamp.toSec()).data();
+    for (int i = 0; i < 4; i++) {
+        cout << s[i] << ", ";
+    }
+    cout << endl;
 
     // if (pub_tf || pub_pose) {
     //     if (!(T_.empty())) {
