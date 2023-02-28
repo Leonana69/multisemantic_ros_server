@@ -15,13 +15,13 @@ class MultisemanticServer():
     def run(self, m_packet):
         result = []
 
-        if m_packet.image['format'] == MultisemanticPacket.image_format[0]:
+        if m_packet.image['format'] == MultisemanticPacket.image_format[1]:
             image_msg = self.bridge.cv2_to_imgmsg(m_packet.image['data'])
-        elif m_packet.image['format'] == MultisemanticPacket.image_format[1]:
+        elif m_packet.image['format'] == MultisemanticPacket.image_format[2]:
             img = np.array(m_packet.image['data'], dtype=np.uint8)
             image = cv2.imdecode(img, cv2.IMREAD_COLOR)
             image_msg = self.bridge.cv2_to_imgmsg(image)
-        elif m_packet.image['format'] == MultisemanticPacket.image_format[2]:
+        elif m_packet.image['format'] == MultisemanticPacket.image_format[3]:
             image_msg = m_packet.image['data']
         else:
             image_msg = None
