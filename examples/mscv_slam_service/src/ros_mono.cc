@@ -57,25 +57,25 @@ public:
 };
 
 int main(int argc, char **argv) {
-    if (argc != 3) {
-        cout << argv[0] << ", " << argv[1] << ", " << argv[2] << endl;
+    if (argc != 4) {
+        cout << argv[0] << ", " << argv[1] << ", " << argv[2] << ", " << argv[3] << endl;
         cerr << endl << "Usage: rosrun ORB_SLAM3 Mono path_to_vocabulary path_to_settings username" << endl;        
         return 1;
     }
 
-    ros::init(argc, argv, "slam_" + string(argv[2]));
+    ros::init(argc, argv, "slam_" + string(argv[3]));
     ros::start();
 
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
-    ORB_SLAM3::System SLAM(argv[0], argv[1], ORB_SLAM3::System::MONOCULAR, false);
+    ORB_SLAM3::System SLAM(argv[1], argv[2], ORB_SLAM3::System::MONOCULAR, false);
 
     ImageGrabber igb(&SLAM);
 
     ros::NodeHandle nodeHandler;
-    ros::Subscriber sub = nodeHandler.subscribe("/camera/image_" + string(argv[2]), 1, &ImageGrabber::GrabImage, &igb);
+    ros::Subscriber sub = nodeHandler.subscribe("/camera/image_" + string(argv[3]), 1, &ImageGrabber::GrabImage, &igb);
 
     // leo: add for pub
-    ros::Publisher pose_pub = nodeHandler.advertise<geometry_msgs::Quaternion>("slam_res_" + string(argv[2]), 100);
+    ros::Publisher pose_pub = nodeHandler.advertise<geometry_msgs::Quaternion>("slam_res_" + string(argv[3]), 100);
     igb.SetPub(&pose_pub);
     igb.pub_pose = true;
     // leo: end
