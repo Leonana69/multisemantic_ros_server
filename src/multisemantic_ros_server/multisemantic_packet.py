@@ -4,7 +4,7 @@ class MultisemanticPacket():
     mode = ['single_image', 'stream', 'stop']
     function = ['pose', 'slam']
     image_format = ['none', 'raw', 'cv_compressed', 'ros_msg']
-    users_list = ['duke_drone_1', 'duke_drone_2', 'test', 'guojun']
+    users_list = ['duke_drone_1', 'duke_drone_2', 'web_interface', 'guojun']
 
     def __init__(self, user='', mode='', timestamp=0.0, function=[], msg=[], image=None, imu=None):
         self.user = user
