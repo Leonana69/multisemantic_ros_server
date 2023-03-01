@@ -60,8 +60,8 @@ int main(int argc, char **argv) {
     ros::init(argc, argv, "Mono");
     ros::start();
 
-    if (argc != 3) {
-        cerr << endl << "Usage: rosrun ORB_SLAM3 Mono path_to_vocabulary path_to_settings" << endl;        
+    if (argc != 4) {
+        cerr << endl << "Usage: rosrun ORB_SLAM3 Mono path_to_vocabulary path_to_settings username" << endl;        
         ros::shutdown();
         return 1;
     }
@@ -72,10 +72,10 @@ int main(int argc, char **argv) {
     ImageGrabber igb(&SLAM);
 
     ros::NodeHandle nodeHandler;
-    ros::Subscriber sub = nodeHandler.subscribe("/camera/image_guojun", 1, &ImageGrabber::GrabImage, &igb);
+    ros::Subscriber sub = nodeHandler.subscribe("/camera/image_" + string(argv[3]), 1, &ImageGrabber::GrabImage, &igb);
 
     // leo: add for pub
-    ros::Publisher pose_pub = nodeHandler.advertise<geometry_msgs::Quaternion>("slam_pose_guojun", 100);
+    ros::Publisher pose_pub = nodeHandler.advertise<geometry_msgs::Quaternion>("slam_res_" + string(argv[3]), 100);
     igb.SetPub(&pose_pub);
     igb.pub_pose = true;
     // leo: end
