@@ -1,0 +1,7 @@
+<launch>
+  <node name="mscv_slam_service"
+        pkg="mscv_slam_service"
+        type="mscv_slam_service_node"
+        output="screen"
+        args="/root/Dev/ORB_SLAM3/Vocabulary/ORBvoc.txt /root/Dev/ORB_SLAM3/Examples/Monocular/mbp14.yaml duke_drone_2"/>
+</launch>
