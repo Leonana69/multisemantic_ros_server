@@ -36,11 +36,9 @@ class MultisemanticServer():
                 entry['output'], msg = self.pose_task.request(image_msg)
             elif f == 'slam':
                 if m_packet.user not in self.slam_nodes:
-                    print(f'init slam node: {m_packet.user}')
                     self.slam_nodes[m_packet.user] = SLAMTask(m_packet.user)
                     msg = 'Init SLAM Node'
                 elif m_packet.mode == 'stop':
-                    print(f'remove slam node: {m_packet.user}')
                     del self.slam_nodes[m_packet.user]
                     msg = 'Remove SLAM Node'
                 else:

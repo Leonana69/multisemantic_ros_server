@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
     ros::Subscriber sub = nodeHandler.subscribe("/camera/image_guojun", 1, &ImageGrabber::GrabImage, &igb);
 
     // leo: add for pub
-    ros::Publisher pose_pub = nodeHandler.advertise<geometry_msgs::PoseStamped>("orb_pose", 100);
+    ros::Publisher pose_pub = nodeHandler.advertise<geometry_msgs::Quaternion>("slam_pose_guojun", 100);
     igb.SetPub(&pose_pub);
     igb.pub_pose = true;
     // leo: end
@@ -107,6 +107,13 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg) {
         cout << s[i] << ", ";
     }
     cout << endl;
+
+    geometry_msgs::Quaternion q_msg;
+    q_msg.x = s[0];
+    q_msg.y = s[1];
+    q_msg.z = s[2];
+    q_msg.w = s[3];
+    orb_pub->publish(q_msg);
 
     // if (pub_tf || pub_pose) {
     //     if (!(T_.empty())) {
