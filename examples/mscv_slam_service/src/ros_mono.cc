@@ -57,14 +57,13 @@ public:
 };
 
 int main(int argc, char **argv) {
-    ros::init(argc, argv, "Mono");
-    ros::start();
-
     if (argc != 4) {
         cerr << endl << "Usage: rosrun ORB_SLAM3 Mono path_to_vocabulary path_to_settings username" << endl;        
-        ros::shutdown();
         return 1;
     }
+
+    ros::init(argc, argv, "slam_" + string(argv[3]));
+    ros::start();
 
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
     ORB_SLAM3::System SLAM(argv[1], argv[2], ORB_SLAM3::System::MONOCULAR, false);
